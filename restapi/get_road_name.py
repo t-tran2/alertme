@@ -27,6 +27,6 @@ def get_road_name(point):
     placeId = arr[0]["placeId"]
 
     # Get the road name from placeID
-    place_request.place_request(placeId)
+    return place_request.place_request(placeId)
 
 get_road_name("40.00372338521878,-83.01264987638984")
