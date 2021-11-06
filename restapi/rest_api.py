@@ -1,6 +1,6 @@
 from flask import Flask
 
-from alertme.restapi.get_road_name import get_road_name
+from get_road_name import get_road_name
 app = Flask(__name__)
 @app.route('/alertme/', methods=['GET', 'POST'])
 def get_warning(points):
