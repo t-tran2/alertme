@@ -27,12 +27,16 @@ class LandingPage extends Component {
       let data = response.data;
       console.log(JSON.stringify(response.data));
       let message
-      if(!("warning" in response.data)){
-        message = "Can't identify nearby roads."
+      if("clear" in response.data){
+        message = "This road is relativly safe";
       }
-      else {
+      else if("warning" in response.data) {
         message = response.data["warning"]
       }
+      else {
+        message = "Can't identify nearby roads."
+      }
+      
       alert(message);
   };
   render() {

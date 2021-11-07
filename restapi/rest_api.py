@@ -30,7 +30,10 @@ def get_warning():
     road_names = get_road_name(lat, long)
     if road_names != "-1":
         warning = search_crashes(road_names, crash_df, lat, long)
-        ret["warning"] = warning
+        if(warning == "-1"):
+            ret['clear'] = 1
+        else:
+            ret["warning"] = warning
     return ret
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
