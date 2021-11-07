@@ -24,6 +24,8 @@ def search_crashes(road_names, crash_df, lat, long):
         warning_msg = "Crash prone zone, please be cautious"
         if distance < distance_threshold:
             return warning_msg
+        
+    return "-1"
 
     # Delete later
     # test_df = filtered_crash_df[filtered_crash_df["LocationRoadName"] == "Shrock"]

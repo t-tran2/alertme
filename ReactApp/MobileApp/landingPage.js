@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import {
   View,
   Text,
@@ -19,10 +20,24 @@ class LandingPage extends Component {
   updateLatitude = (text) => {
     this.setState({ latitude: text });
   };
-  submit = (longitude, latitude) => {
+  submit = async (longitude, latitude) => {
     this.setState({ confirmedLocation: true });
-
-    alert("longitude: " + longitude + " latitude: " + latitude);
+      let response = await axios.get(`http://172.27.120.236:5000/alertme/?lat=${latitude}&long=${longitude}`);
+      console.log(response.data);
+      let data = response.data;
+      console.log(JSON.stringify(response.data));
+      let message
+      if("clear" in response.data){
+        message = "This road is relativly safe";
+      }
+      else if("warning" in response.data) {
+        message = response.data["warning"]
+      }
+      else {
+        message = "Can't identify nearby roads."
+      }
+      
+      alert(message);
   };
   render() {
     return (

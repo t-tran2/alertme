@@ -7,9 +7,9 @@ def calc_distance(lat1, lon1, lat2, lon2):
      
     # The math module contains a function named
     # radians which converts from degrees to radians.
-    lon1 = radians(lon1)
+    lon1 = radians(float(lon1))
     lon2 = radians(lon2)
-    lat1 = radians(lat1)
+    lat1 = radians(float(lat1))
     lat2 = radians(lat2)
       
     # Haversine formula

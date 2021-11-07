@@ -16,14 +16,17 @@ def get_road_name(latitude, longitude):
     
     # complete and encode url
     url += urllib.parse.quote(point) + key
-
+    print(url)
     payload={}
     headers = {}
 
     response = requests.request("GET", url, headers=headers, data=payload)
 
     print(response.text)
+    if not response.json():
+        return "-1"
     arr = response.json()["snappedPoints"]
+
 
     placeId = arr[0]["placeId"]
 
