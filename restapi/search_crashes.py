@@ -3,7 +3,7 @@ from calc_distance import calc_distance
 
 # Test: delete these later
 # Load crashclean2.csv dataset into dataframe
-test_df = pd.read_csv("data/crashclean2.csv", low_memory=False)
+test_df = pd.read_csv("../data/crashclean2.csv", low_memory=False)
 # Dataframe with only columns of interest
 columns = ['LocalReportNumber', 'Latitude', 'Longitude', 'LocationRoadName']
 test_df = test_df[columns]
@@ -31,4 +31,4 @@ def search_crashes(road_names, crash_df, lat, long):
 
 
 # test
-print(search_crashes(["shrock", "broad"], test_df, 39.98525,	-82.79114))
+# print(search_crashes(["shrock", "broad"], test_df, 39.98525,	-82.79114))
