@@ -21,12 +21,16 @@ class LandingPage extends Component {
   };
   submit = (longitude, latitude) => {
     this.setState({ confirmedLocation: true });
+
     alert("longitude: " + longitude + " latitude: " + latitude);
   };
   render() {
     return (
       <View style={styles.container}>
-        <Text>Welcome</Text>
+        <Text style={styles.title}>Welcome!</Text>
+        <Text style={styles.subTitle}>
+          Please type the longitude and latitude to continue
+        </Text>
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
@@ -60,7 +64,16 @@ class LandingPage extends Component {
 export default LandingPage;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 35,
+  },
+  subTitle: {
+    marginBottom: 20,
+    fontSize: 15,
+  },
   input: {
+    padding: 5,
+    width: "50%",
     margin: 15,
     height: 40,
     borderColor: "#7a42f4",
