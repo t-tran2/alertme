@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import Geolocation from '@react-native-community/geolocation';
 import {
   View,
   Text,
@@ -22,22 +25,55 @@ class LandingPage extends Component {
   };
   submit = async (longitude, latitude) => {
     this.setState({ confirmedLocation: true });
-      let response = await axios.get(`http://172.27.120.236:5000/alertme/?lat=${latitude}&long=${longitude}`);
-      console.log(response.data);
-      let data = response.data;
-      console.log(JSON.stringify(response.data));
-      let message
-      if("clear" in response.data){
-        message = "This road is relativly safe";
-      }
-      else if("warning" in response.data) {
-        message = response.data["warning"]
-      }
-      else {
-        message = "Can't identify nearby roads."
-      }
-      
-      alert(message);
+    // Send REST API request
+    let response = await axios.get(`http://172.27.120.236:5000/alertme/?lat=${latitude}&long=${longitude}`);
+    console.log(response.data); // debug
+    let data = response.data;
+    console.log(JSON.stringify(response.data));
+    let message
+    if ("clear" in response.data) {
+      message = "This road is relativly safe";
+    }
+    else if ("warning" in response.data) {
+      message = response.data["warning"]
+    }
+    else {
+      message = "Can't identify nearby roads."
+    }
+
+    alert(message);
+  };
+  locate = async () => {
+    this.setState({ confirmedLocation: true });
+
+    // Get user location
+    Geolocation.getCurrentPosition(
+      // Will give you the current location
+      (position) => {
+        //getting the Longitude from the location json
+        const currentLongitude =
+          JSON.stringify(position.coords.longitude);
+
+        //getting the Latitude from the location json
+        const currentLatitude =
+          JSON.stringify(position.coords.latitude);
+
+        // Debug
+        console.log(currentLatitude);
+        console.log(currentLongitude);
+        console.log(position);
+        // Call submit
+        this.submit(currentLongitude, currentLatitude);
+      },
+      (error) => {
+        setLocationStatus(error.message);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 30000,
+        maximumAge: 1000
+      },
+    );
   };
   render() {
     return (
@@ -72,6 +108,15 @@ class LandingPage extends Component {
             {this.state.confirmedLocation ? "Update" : "Confirm"}
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => this.locate(this.state.longitude, this.state.latitude)}
+        >
+          <Text style={styles.locateButtonText}>
+            Locate
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -101,6 +146,15 @@ const styles = StyleSheet.create({
     height: 40,
   },
   submitButtonText: {
+    color: "white",
+  },
+  locateButton: {
+    backgroundColor: "#543cde",
+    padding: 10,
+    margin: 15,
+    height: 40,
+  },
+  locateButtonText: {
     color: "white",
   },
   container: {
