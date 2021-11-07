@@ -26,6 +26,7 @@ def get_warning():
     # Get url parameters
     lat = request.args.get("lat")
     long = request.args.get("long")
+    print(lat)
     # Make return object
     ret = {}
     # Get road name using Google Maps API
@@ -35,6 +36,7 @@ def get_warning():
         # Search crash db for crashes
         warning = search_crashes(road_names, crash_df, lat, long)
         # Check if there is a crash nearby
+        print(warning)
         if(warning == "-1"):
             ret['clear'] = 1
         else:

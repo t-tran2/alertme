@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-import Geolocation from '@react-native-community/geolocation';
+// import * as Permissions from 'expo-permissions';
+// import Geolocation from '@react-native-community/geolocation';
 import {
   View,
   Text,
@@ -25,9 +25,10 @@ class LandingPage extends Component {
   };
   submit = async (longitude, latitude) => {
     this.setState({ confirmedLocation: true });
+    alert("check2");
     // Send REST API request
     let response = await axios.get(`http://172.27.120.236:5000/alertme/?lat=${latitude}&long=${longitude}`);
-    console.log(response.data); // debug
+    console.log("after api call "+ response.data); // debug
     let data = response.data;
     console.log(JSON.stringify(response.data));
     let message
@@ -45,35 +46,23 @@ class LandingPage extends Component {
   };
   locate = async () => {
     this.setState({ confirmedLocation: true });
+    alert("checkpoint1")
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
 
-    // Get user location
-    Geolocation.getCurrentPosition(
-      // Will give you the current location
-      (position) => {
-        //getting the Longitude from the location json
-        const currentLongitude =
-          JSON.stringify(position.coords.longitude);
+    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+    const { latitude, longitude } = location.coords
 
-        //getting the Latitude from the location json
-        const currentLatitude =
-          JSON.stringify(position.coords.latitude);
-
-        // Debug
-        console.log(currentLatitude);
-        console.log(currentLongitude);
-        console.log(position);
-        // Call submit
-        this.submit(currentLongitude, currentLatitude);
-      },
-      (error) => {
-        setLocationStatus(error.message);
-      },
-      {
-        enableHighAccuracy: false,
-        timeout: 30000,
-        maximumAge: 1000
-      },
-    );
+    // Debug
+    console.log(latitude);
+    console.log(longitude);
+    console.log(location.coords);
+    // Call submit
+    await this.submit(longitude, latitude);
   };
   render() {
     return (
