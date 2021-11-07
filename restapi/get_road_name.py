@@ -5,8 +5,9 @@ from dotenv import load_dotenv, find_dotenv
 import urllib.parse
 import place_request
 
-def get_road_name(point):
+def get_road_name(latitude, longitude):
     load_dotenv(find_dotenv())
+    point = latitude + "," + longitude
 
     # Get the placeId of current location
     # Complete the url
@@ -27,6 +28,6 @@ def get_road_name(point):
     placeId = arr[0]["placeId"]
 
     # Get the road name from placeID
-    place_request.place_request(placeId)
+    return place_request.place_request(placeId)
 
-get_road_name("40.00372338521878,-83.01264987638984")
+# get_road_name("40.00372338521878,-83.01264987638984")
